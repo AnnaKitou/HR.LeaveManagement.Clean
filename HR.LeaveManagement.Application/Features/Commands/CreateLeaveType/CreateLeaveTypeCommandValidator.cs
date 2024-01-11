@@ -24,16 +24,16 @@ namespace HR.LeaveManagement.Application.Features.Commands.CreateLeaveType
                 .GreaterThan(1).WithMessage("{PropertyName} cannot be less than 1");
 
             RuleFor(q => q)
-                .MustAsync(LeaveTypeNameUnique)
-                .WithMessage("Leave type already exists");
+             .MustAsync(LeaveTypeNameUnique)
+             .WithMessage("Leave type already exists");
 
-            _leaveTypeRepository = leaveTypeRepository;
+
+            this._leaveTypeRepository = leaveTypeRepository;
         }
 
         private Task<bool> LeaveTypeNameUnique(CreateLeaveTypeCommand command, CancellationToken token)
         {
             return _leaveTypeRepository.IsLeaveTypeUnique(command.Name);
-
         }
     }
 }

@@ -1,14 +1,9 @@
 ﻿using AutoMapper;
 using HR.LeaveManagement.Application.Contracts.Persistence;
 using HR.LeaveManagement.Application.Exceptions;
-using HR.LeaveManagement.Application.Features.Queries.GetLeaveTypeDetails;
 using HR.LeaveManagement.Domain;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace HR.LeaveManagement.Application.Features.Commands.CreateLeaveType
 {
@@ -23,21 +18,20 @@ namespace HR.LeaveManagement.Application.Features.Commands.CreateLeaveType
         }
         public async Task<int> Handle(CreateLeaveTypeCommand request, CancellationToken cancellationToken)
         {
-            //1. Validate Incoming Data
+            // Validate incoming data
             var validator = new CreateLeaveTypeCommandValidator(_leaveTypeRepository);
             var validationResult = await validator.ValidateAsync(request);
 
             if (validationResult.Errors.Any())
-            {
-                throw new BadRequestException("Invalid LeaveType",validationResult);
-            }
-            //2. Convert to Domain Entity Type Object
+                throw new BadRequestException("Invalid Leave type", validationResult);
+
+            // convert to domain entity object
             var leaveTypeToCreate = _mapper.Map<LeaveType>(request);
 
-            //3. Add to Database 
+            // add to database
             await _leaveTypeRepository.CreateAsync(leaveTypeToCreate);
-            //4. Return to record id
 
+            // retun record id
             return leaveTypeToCreate.Id;
         }
     }
