@@ -16,7 +16,7 @@ namespace HR.LeaveManagement.Application.Features.Commands.DeleteLeaveType
 
         private readonly ILeaveTypeRepository _leaveTypeRepository;
 
-        public DeleteLeaveTypeCommandHandler(IMapper mapper, ILeaveTypeRepository leaveTypeRepository)
+        public DeleteLeaveTypeCommandHandler(ILeaveTypeRepository leaveTypeRepository)
         {
 
             _leaveTypeRepository = leaveTypeRepository;
