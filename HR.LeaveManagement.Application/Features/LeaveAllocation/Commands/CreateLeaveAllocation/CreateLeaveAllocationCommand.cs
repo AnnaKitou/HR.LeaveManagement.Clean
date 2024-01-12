@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace HR.LeaveManagement.Application.Features.LeaveAllocation.Commands.CreateLeaveAllocation
 {
-    public record CreateLeaveAllocationCommand : IRequest<int>;
+    public class CreateLeaveAllocationCommand : IRequest<int>
+    {
+        public int LeaveTypeId { get; set; }
+    }
 
 }

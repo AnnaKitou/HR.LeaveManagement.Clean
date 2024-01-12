@@ -29,7 +29,7 @@ namespace HR.LeaveManagement.Application.Features.LeaveType.Commands.DeleteLeave
             //verify record exist
             if (leaveTypeToDelete == null)
             {
-                throw new NotFoundException(nameof(LeaveType), request.Id);
+                throw new NotFoundException(nameof(HR.LeaveManagement.Domain.LeaveType), request.Id);
             }
             //remove from database
             await _leaveTypeRepository.DeleteAsync(leaveTypeToDelete);

@@ -28,6 +28,8 @@ namespace HR.LeaveManagement.Application.Features.LeaveAllocation.Commands.Updat
 
         public async Task<Unit> Handle(UpdateLeaveTypeCommand request, CancellationToken cancellationToken)
         {
+            //var validator = new
+
             var leaveAllocationToUpdate = _mapper.Map<HR.LeaveManagement.Domain.LeaveAllocation>(request);
 
             await _leaveAllocationRepository.UpdateAsync(leaveAllocationToUpdate);
