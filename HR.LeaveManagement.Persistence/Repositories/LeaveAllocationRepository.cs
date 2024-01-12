@@ -14,5 +14,20 @@ namespace HR.LeaveManagement.Persistence.Repositories
         public LeaveAllocationRepository(HrDatabaseContext context) : base(context)
         {
         }
+
+        public Task<List<LeaveAllocation>> GetLeaveAllocationsWithDetails()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<LeaveAllocation>> GetLeaveAllocationsWithDetails(string userId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<LeaveAllocation> GetLeaveAllocationWithDetails(int id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

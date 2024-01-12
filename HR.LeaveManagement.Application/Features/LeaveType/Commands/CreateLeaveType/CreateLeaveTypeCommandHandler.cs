@@ -5,7 +5,7 @@ using HR.LeaveManagement.Domain;
 using MediatR;
 
 
-namespace HR.LeaveManagement.Application.Features.Commands.CreateLeaveType
+namespace HR.LeaveManagement.Application.Features.LeaveType.Commands.CreateLeaveType
 {
     public class CreateLeaveTypeCommandHandler : IRequestHandler<CreateLeaveTypeCommand, int>
     {
@@ -26,7 +26,7 @@ namespace HR.LeaveManagement.Application.Features.Commands.CreateLeaveType
                 throw new BadRequestException("Invalid Leave type", validationResult);
 
             // convert to domain entity object
-            var leaveTypeToCreate = _mapper.Map<LeaveType>(request);
+            var leaveTypeToCreate = _mapper.Map<HR.LeaveManagement.Domain.LeaveType>(request);
 
             // add to database
             await _leaveTypeRepository.CreateAsync(leaveTypeToCreate);

@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HR.LeaveManagement.Application.Features.Commands.CreateLeaveType
+namespace HR.LeaveManagement.Application.Features.LeaveType.Commands.CreateLeaveType
 {
     public class CreateLeaveTypeCommandValidator : AbstractValidator<CreateLeaveTypeCommand>
     {
@@ -28,7 +28,7 @@ namespace HR.LeaveManagement.Application.Features.Commands.CreateLeaveType
              .WithMessage("Leave type already exists");
 
 
-            this._leaveTypeRepository = leaveTypeRepository;
+            _leaveTypeRepository = leaveTypeRepository;
         }
 
         private Task<bool> LeaveTypeNameUnique(CreateLeaveTypeCommand command, CancellationToken token)

@@ -6,9 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HR.LeaveManagement.Application.Features.Commands.UpdateLeaveType
+namespace HR.LeaveManagement.Application.Features.LeaveType.Commands.UpdateLeaveType
 {
-    public class UpdateLeaveTypeCommandValidator: AbstractValidator<UpdateLeaveTypeCommand>
+    public class UpdateLeaveTypeCommandValidator : AbstractValidator<UpdateLeaveTypeCommand>
     {
         private readonly ILeaveTypeRepository _leaveTypeRepository;
 

@@ -5,10 +5,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HR.LeaveManagement.Application.Features.Commands.DeleteLeaveType
+namespace HR.LeaveManagement.Application.Features.LeaveAllocation.Commands.DeleteLeaveAllocation
 {
-    public class DeleteLeaveTypeCommand:IRequest<Unit>
+    public class DeleteLeaveAllocationCommand:IRequest<Unit>
     {
         public int Id { get; set; }
     }
+ 
 }
