@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using HR.LeaveManagement.Application.Features.LeaveAllocation.Queries.GetAllLeaveAllocations;
+using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,8 +15,9 @@ namespace HR.LeaveManagement.API.Controllers
         }
 
         // GET: LeaveAllocationsController
-        public ActionResult Index()
+        public async Task<List<LeaveAllocationDto>> Index()
         {
+            var leaveTypes = await _mediator.Send(new GetLeaveAllocationsQuery());
             return View();
         }
 
