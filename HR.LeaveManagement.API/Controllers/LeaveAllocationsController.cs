@@ -25,7 +25,7 @@ namespace HR.LeaveManagement.API.Controllers
 
         // GET: api/<LeaveAllocationsController>
         [HttpGet]
-        public async Task<ActionResult<List<LeaveAllocationDto>>> Get()
+        public async Task<ActionResult<List<LeaveAllocationDto>>> Get(bool isLoggedInUser = false)
         {
             var leaveAllocations = await _mediator.Send(new GetLeaveAllocationsQuery());
             return Ok(leaveAllocations);
@@ -33,9 +33,9 @@ namespace HR.LeaveManagement.API.Controllers
 
         // GET api/<LeaveAllocationsController>/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<LeaveAllocationDto>> Get(int id)
+        public async Task<ActionResult<LeaveAllocationDetailsDto>> Get(int id)
         {
-            var leaveAllocation = await _mediator.Send(new GetLeaveAllocationDetailsQuery(id));
+            var leaveAllocation = await _mediator.Send(new GetLeaveAllocationDetailsQuery { Id = id });
             return Ok(leaveAllocation);
         }
 
@@ -48,7 +48,7 @@ namespace HR.LeaveManagement.API.Controllers
         {
             var response = _mediator.Send(leaveAllocation);
 
-            return CreatedAtRoute(nameof(Get), new { id = response });
+            return CreatedAtAction(nameof(Get), new { id = response });
         }
 
         // PUT api/<LeaveAllocationsController>/5
@@ -65,6 +65,9 @@ namespace HR.LeaveManagement.API.Controllers
 
         // DELETE api/<LeaveAllocationsController>/5
         [HttpDelete("{id}")]
+        [ProducesResponseType(201)]
+        [ProducesResponseType(400)]
+        [ProducesDefaultResponseType]
         public async Task<ActionResult> Delete(int id)
         {
             var command = new DeleteLeaveAllocationCommand { Id = id };
