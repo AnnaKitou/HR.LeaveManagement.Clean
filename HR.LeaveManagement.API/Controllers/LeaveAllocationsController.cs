@@ -1,11 +1,20 @@
-﻿using HR.LeaveManagement.Application.Features.LeaveAllocation.Queries.GetAllLeaveAllocations;
+﻿using HR.LeaveManagement.Application.Features.LeaveAllocation.Commands.CreateLeaveAllocation;
+using HR.LeaveManagement.Application.Features.LeaveAllocation.Commands.DeleteLeaveAllocation;
+using HR.LeaveManagement.Application.Features.LeaveAllocation.Commands.UpdateLeaveAllocation;
+using HR.LeaveManagement.Application.Features.LeaveAllocation.Queries.GetAllLeaveAllocations;
+using HR.LeaveManagement.Application.Features.LeaveAllocation.Queries.GetLeaveAllocationDetails;
+using HR.LeaveManagement.Domain;
+using HR.LeaveManagement.Persistence.DatabaseContext;
 using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+
+// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace HR.LeaveManagement.API.Controllers
 {
-    public class LeaveAllocationsController : Controller
+    [Route("api/[controller]")]
+    [ApiController]
+    public class LeaveAllocationsController : ControllerBase
     {
         private readonly IMediator _mediator;
 
@@ -14,80 +23,53 @@ namespace HR.LeaveManagement.API.Controllers
             _mediator = mediator;
         }
 
-        // GET: LeaveAllocationsController
-        public async Task<List<LeaveAllocationDto>> Index()
+        // GET: api/<LeaveAllocationsController>
+        [HttpGet]
+        public async Task<ActionResult<List<LeaveAllocationDto>>> Get()
         {
-            var leaveTypes = await _mediator.Send(new GetLeaveAllocationsQuery());
-            return View();
+            var leaveAllocations = await _mediator.Send(new GetLeaveAllocationsQuery());
+            return Ok(leaveAllocations);
         }
 
-        // GET: LeaveAllocationsController/Details/5
-        public ActionResult Details(int id)
+        // GET api/<LeaveAllocationsController>/5
+        [HttpGet("{id}")]
+        public async Task<ActionResult<LeaveAllocationDto>> Get(int id)
         {
-            return View();
+            var leaveAllocation = await _mediator.Send(new GetLeaveAllocationDetailsQuery(id));
+            return Ok(leaveAllocation);
         }
 
-        // GET: LeaveAllocationsController/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: LeaveAllocationsController/Create
+        // POST api/<LeaveAllocationsController>
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        [ProducesResponseType(201)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult> Post(CreateLeaveAllocationCommand leaveAllocation)
         {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            var response = _mediator.Send(leaveAllocation);
+
+            return CreatedAtRoute(nameof(Get), new { id = response });
         }
 
-        // GET: LeaveAllocationsController/Edit/5
-        public ActionResult Edit(int id)
+        // PUT api/<LeaveAllocationsController>/5
+        [HttpPut("{id}")]
+        [ProducesResponseType(201)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesDefaultResponseType]
+        public async Task<ActionResult> Put(UpdateLeaveAllocationCommand leaveAllocation)
         {
-            return View();
+            var response = _mediator.Send(leaveAllocation);
+            return NoContent();
         }
 
-        // POST: LeaveAllocationsController/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        // DELETE api/<LeaveAllocationsController>/5
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> Delete(int id)
         {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: LeaveAllocationsController/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: LeaveAllocationsController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            var command = new DeleteLeaveAllocationCommand { Id = id };
+            await _mediator.Send(command);
+            return NoContent();
         }
     }
 }
