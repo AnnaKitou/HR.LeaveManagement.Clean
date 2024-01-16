@@ -16,13 +16,11 @@ namespace HR.LeaveManagement.Application.Features.LeaveAllocation.Commands.Delet
     {
         private readonly IMapper _mapper;
         private readonly ILeaveAllocationRepository _leaveAllocationRepository;
-        private readonly IAppLogger<DeleteLeaveAllocationCommandHandler> _logger;
 
-        public DeleteLeaveAllocationCommandHandler(IMapper mapper, ILeaveAllocationRepository leaveAllocationRepository, IAppLogger<DeleteLeaveAllocationCommandHandler> logger)
+        public DeleteLeaveAllocationCommandHandler(IMapper mapper, ILeaveAllocationRepository leaveAllocationRepository)
         {
             _mapper = mapper;
             _leaveAllocationRepository = leaveAllocationRepository;
-            _logger = logger;
         }
         public async Task<Unit> Handle(DeleteLeaveAllocationCommand request, CancellationToken cancellationToken)
         {

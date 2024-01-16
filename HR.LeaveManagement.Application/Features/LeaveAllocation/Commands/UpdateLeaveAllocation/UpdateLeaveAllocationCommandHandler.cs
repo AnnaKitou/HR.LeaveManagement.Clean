@@ -35,15 +35,21 @@ namespace HR.LeaveManagement.Application.Features.LeaveAllocation.Commands.Updat
             var validator = new UpdateLeaveAllocationCommandValidator(_leaveTypeRepository, _leaveAllocationRepository);
             var validationResult = await validator.ValidateAsync(request);
 
-            if (validationResult.Errors.Any()) 
+            if (validationResult.Errors.Any())
             {
-                _logger.LogWarning("Validation errors in update request for {0} - {1}", nameof(LeaveType), request.Id);
                 throw new BadRequestException("Invalid LeaveAllocation", validationResult);
             }
 
-            var leaveAllocationToUpdate = _mapper.Map<HR.LeaveManagement.Domain.LeaveAllocation>(request);
+            var leaveAllocation = await _leaveAllocationRepository.GetByIdAsync(request.Id);
 
-            await _leaveAllocationRepository.UpdateAsync(leaveAllocationToUpdate);
+            if (leaveAllocation is null)
+            {
+                throw new NotFoundException(nameof(leaveAllocation), request.Id);
+            }
+
+            _mapper.Map(request, leaveAllocation);
+
+            await _leaveAllocationRepository.UpdateAsync(leaveAllocation);
 
             return Unit.Value;
         }

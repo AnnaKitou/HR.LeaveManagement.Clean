@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace HR.LeaveManagement.Application.Features.LeaveAllocation.Commands.CreateLeaveAllocation
 {
-    public class CreateLeaveAllocationCommandHandler : IRequestHandler<CreateLeaveAllocationCommand, int>
+    public class CreateLeaveAllocationCommandHandler : IRequestHandler<CreateLeaveAllocationCommand, Unit>
     {
         private readonly IMapper _mapper;
         private readonly ILeaveAllocationRepository _leaveAllocationRepository;
@@ -24,7 +24,7 @@ namespace HR.LeaveManagement.Application.Features.LeaveAllocation.Commands.Creat
             _leaveAllocationRepository = leaveAllocationRepository;
             _leaveTypeRepository = leaveTypeRepository;
         }
-        public async Task<int> Handle(CreateLeaveAllocationCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(CreateLeaveAllocationCommand request, CancellationToken cancellationToken)
         {
             var validator = new CreateLeaveAllocationCommandValidator(_leaveTypeRepository);
             var validationResult = await validator.ValidateAsync(request);
@@ -38,7 +38,7 @@ namespace HR.LeaveManagement.Application.Features.LeaveAllocation.Commands.Creat
 
             await _leaveAllocationRepository.CreateAsync(leaveAllocationToCreate);
 
-            return leaveAllocationToCreate.Id;
+            return Unit.Value;
         }
     }
 }
