@@ -1,6 +1,9 @@
 ﻿using AutoMapper;
+using HR.LeaveManagement.Application.Contracts.Email;
+using HR.LeaveManagement.Application.Contracts.Logging;
 using HR.LeaveManagement.Application.Contracts.Persistence;
 using HR.LeaveManagement.Application.Exceptions;
+using HR.LeaveManagement.Application.Models.Email;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -15,12 +18,17 @@ namespace HR.LeaveManagement.Application.Features.LeaveRequest.Commands.UpdateLe
         private readonly IMapper _mapper;
         private readonly ILeaveTypeRepository _leaveTypeRepository;
         private readonly ILeaveRequestRepository _leaveRequestRepository;
+        private readonly IEmailSender _emailSender;
+        private readonly IAppLogger<UpdateLeaveRequestCommandHandler> _appLogger;
 
-        public UpdateLeaveRequestCommandHandler(IMapper mapper, ILeaveRequestRepository leaveRequestRepository, ILeaveTypeRepository leaveTypeRepository)
+        public UpdateLeaveRequestCommandHandler(IMapper mapper, ILeaveRequestRepository leaveRequestRepository, ILeaveTypeRepository leaveTypeRepository,
+            IEmailSender emailSender, IAppLogger<UpdateLeaveRequestCommandHandler> appLogger)
         {
             _mapper = mapper;
             _leaveRequestRepository = leaveRequestRepository;
             _leaveTypeRepository = leaveTypeRepository;
+            _emailSender = emailSender;
+            _appLogger = appLogger;
         }
         public async Task<Unit> Handle(UpdateLeaveRequestCommand request, CancellationToken cancellationToken)
         {
@@ -41,6 +49,22 @@ namespace HR.LeaveManagement.Application.Features.LeaveRequest.Commands.UpdateLe
             var data = _mapper.Map(request, leaveRequest);
             await _leaveRequestRepository.UpdateAsync(data);
 
+            //send confirmation email
+            try
+            {
+                var email = new EmailMessage
+                {
+                    To = string.Empty,
+                    Body = $"Your leave request for {request.StartDate:D} to {request.EndDate:D}" +
+                           $"has been upadated successfully.",
+                    Subject = "Leave Request Submitted"
+                };
+                await _emailSender.SendEmail(email);
+            }
+            catch (Exception ex)
+            {
+                _appLogger.LogWarning(ex.Message);
+            }
 
             return Unit.Value;
         }

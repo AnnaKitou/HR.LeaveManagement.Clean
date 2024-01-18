@@ -23,13 +23,13 @@ namespace HR.LeaveManagement.Application.Features.LeaveRequest.Queries.GetLeaveR
         }
         public async Task<LeaveRequestDetailsDto> Handle(GetLeaveRequestDetailQuery request, CancellationToken cancellationToken)
         {
-            var leaveRequest = await _leaveRequestRepository.GetLeaveRequestWithDetails(request.id);
+            var leaveRequest = await _leaveRequestRepository.GetLeaveRequestWithDetails(request.Id);
 
             var data = _mapper.Map<LeaveRequestDetailsDto>(leaveRequest);
 
             if (data == null)
             {
-                throw new NotFoundException(nameof(LeaveRequest), request.id);
+                throw new NotFoundException(nameof(LeaveRequest), request.Id);
             }
 
             return data;
