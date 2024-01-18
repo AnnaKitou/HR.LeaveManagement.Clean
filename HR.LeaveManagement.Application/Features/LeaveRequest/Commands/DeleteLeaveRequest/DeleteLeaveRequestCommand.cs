@@ -5,11 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HR.LeaveManagement.Application.Features.LeaveRequest.Queries.GetLeaveRequestDetail
+namespace HR.LeaveManagement.Application.Features.LeaveRequest.Commands.DeleteLeaveRequest
 {
-    public record GetLeaveRequestDetailQuery : IRequest<LeaveRequestDetailsDto>
+    public class DeleteLeaveRequestCommand: IRequest<Unit>
     {
         public int Id { get; set; }
     }
-
 }

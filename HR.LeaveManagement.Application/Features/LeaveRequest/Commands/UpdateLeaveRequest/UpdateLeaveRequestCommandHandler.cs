@@ -41,6 +41,7 @@ namespace HR.LeaveManagement.Application.Features.LeaveRequest.Commands.UpdateLe
             var data = _mapper.Map(request, leaveRequest);
             await _leaveRequestRepository.UpdateAsync(data);
 
+
             return Unit.Value;
         }
     }
