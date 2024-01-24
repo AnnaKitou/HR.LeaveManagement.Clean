@@ -8,6 +8,6 @@ using System.Threading.Tasks;
 
 namespace HR.LeaveManagement.Application.Features.LeaveAllocation.Queries.GetAllLeaveAllocations
 {
-    public record GetLeaveAllocationsQuery : IRequest<List<LeaveAllocationDto>>;
+    public record GetLeaveAllocationListQuery : IRequest<List<LeaveAllocationDto>>;
 
 }

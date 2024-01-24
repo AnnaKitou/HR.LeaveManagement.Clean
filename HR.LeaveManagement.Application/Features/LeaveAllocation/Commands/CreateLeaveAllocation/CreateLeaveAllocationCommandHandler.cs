@@ -30,14 +30,18 @@ namespace HR.LeaveManagement.Application.Features.LeaveAllocation.Commands.Creat
             var validationResult = await validator.ValidateAsync(request);
 
             if (validationResult.Errors.Any())
-            {
                 throw new BadRequestException("Invalid Leave Allocation Request", validationResult);
-            }
 
-            var leaveAllocationToCreate = _mapper.Map<HR.LeaveManagement.Domain.LeaveAllocation>(request);
+            // Get Leave type for allocations
+            var leaveType = await _leaveTypeRepository.GetByIdAsync(request.LeaveTypeId);
 
-            await _leaveAllocationRepository.CreateAsync(leaveAllocationToCreate);
+            // Get Employees
 
+            //Get Period
+
+            //Assign Allocations
+            var leaveAllocation = _mapper.Map<Domain.LeaveAllocation>(request);
+            await _leaveAllocationRepository.CreateAsync(leaveAllocation);
             return Unit.Value;
         }
     }
