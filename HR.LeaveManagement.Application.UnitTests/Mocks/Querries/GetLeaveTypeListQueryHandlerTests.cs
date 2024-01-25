@@ -4,6 +4,7 @@ using HR.LeaveManagement.Application.Contracts.Persistence;
 using HR.LeaveManagement.Application.Features.LeaveType.Queries.GetAllLeaveTypes;
 using HR.LeaveManagement.Application.MappingProfiles;
 using Moq;
+using Shouldly;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,6 +36,12 @@ namespace HR.LeaveManagement.Application.UnitTests.Mocks.Querries
         public async Task GetLeaveTypeListTest()
         {
             var handler = new GetLeaveTypesQueryHandler(_mapper, _mockRepo.Object, _mockAppLogger.Object);
+
+            var result = await handler.Handle(new GetLeaveTypesQuery(),
+                CancellationToken.None);
+
+            result.ShouldBeOfType<List<LeaveTypeDto>>();
+            result.Count.ShouldBe(3);   
         }
     }
 }
